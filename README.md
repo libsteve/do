@@ -67,3 +67,7 @@ dofile example:
 This dofile describes the class `vcss243` which has a `register` project, a `lab01` project with files 'file1', 'file2', and 'file3', a `lab02` project with files 'fileA' and 'fileB'; and the class `cs4` which has a `register` project and a `project1` project with files 'readme', 'file1.cpp', 'file1.h', 'file2.cpp', and 'file2.h'.
 
 Notice how the projects named `register` don't have files associated with them. `register` is a special project that will register the user with the try program. do will automatically submit the required `/dev/null` file with the `register` project.
+
+## Resources
+
+do uses paramiko 1.7.7.1 for ssh and sftp within python. http://www.lag.net/paramiko/
