@@ -1,0 +1,15 @@
+#class=vcss243
+
+register:
+
+lab01:
+	abcde.txt
+	one.py
+	two.py
+
+# class cs4
+
+proj01:
+	text.txt
+	eight.cpp
+	eight.h
