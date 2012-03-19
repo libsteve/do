@@ -74,15 +74,18 @@ def _parse_for_section(sess, line):
 		tokens = string.split(good_line)
 	if len(tokens) == 3 and tokens[2] == '':
 		tokens = tokens[:2]
-	if len(tokens) == 2:
-		if string.lower(tokens[0]) == 'class' and sess.do_declaired == True:
-			sess.current_section = _mk_section(tokens[1])
-			sess.sections += [sess.current_section]
-	if len(tokens) == 1:
-		if string.lower(tokens[0]) == 'dofile':
-			sess.do_declaired = True
-		elif string.lower(toekns[0]) == 'enddo':
-			sess.do_declaired = False
+	if sess.do_declaired == True:
+		if len(tokens) == 2:
+			if string.lower(tokens[0]) == 'class':
+				sess.current_section = _mk_section(tokens[1])
+				sess.sections += [sess.current_section]
+		elif len(tokens) == 1:
+			if string.lower(toekns[0]) == 'enddo':
+				sess.do_declaired = False
+	else:
+		if len(tokens) == 1:
+			if string.lower(tokens[0]) == 'dofile':
+				sess.do_declaired = True
 
 		
 

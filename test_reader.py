@@ -13,7 +13,9 @@ _successes = []
 _failure = 0
 _failures = []
 
-def test(line, expected, s=get_session(), name=""):
+def test(line, expected, s=None, name=""):
+	if s == None:
+		s = get_section()
 	parse_line(s, line)
 	test_proper(s, expected, name)
 
@@ -105,7 +107,7 @@ parse_line(sess, "#dofile")
 parse_line(sess, "#class=vcss243")
 parse_line(sess, "lab01:")
 
-test_s(sess, "file1 file2", lambda s: len(s.current_project.files) == 2 and s.current_project.files[0] == "file1" and s.current_project.files[0] == "file2", name="file on lab")
+test_s(sess, "file1 file2", lambda s: len(s.current_project.files) == 2 and s.current_project.files[0] == "file1" and s.current_project.files[1] == "file2", name="file on lab")
 
 
 
