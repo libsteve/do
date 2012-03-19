@@ -14,4 +14,4 @@
 #
 
 # Python Compiled bitecode
-*.pyc
+.pyc
