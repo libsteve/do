@@ -1,3 +1,5 @@
+#dofile
+
 #class=vcss243
 
 register:

@@ -15,7 +15,7 @@ _failures = []
 
 def test(line, expected, s=None, name=""):
 	if s == None:
-		s = get_section()
+		s = get_session()
 	parse_line(s, line)
 	test_proper(s, expected, name)
 

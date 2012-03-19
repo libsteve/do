@@ -80,7 +80,7 @@ def _parse_for_section(sess, line):
 				sess.current_section = _mk_section(tokens[1])
 				sess.sections += [sess.current_section]
 		elif len(tokens) == 1:
-			if string.lower(toekns[0]) == 'enddo':
+			if string.lower(tokens[0]) == 'enddo':
 				sess.do_declaired = False
 	else:
 		if len(tokens) == 1:

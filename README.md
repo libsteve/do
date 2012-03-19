@@ -40,6 +40,10 @@ Declaring files:
 
 	<file_name>*
 	
+Declare the end of the dofile segment:
+
+	'#' 'enddo'
+	
 dofile example:
 
 	#dofile
@@ -60,13 +64,23 @@ dofile example:
 	register:
 	
 	project1:
-		readme
+		README
 		file1.cpp file1.h
 		file2.cpp file2.h
-		
-This dofile describes the class `vcss243` which has a `register` project, a `lab01` project with files 'file1', 'file2', and 'file3', a `lab02` project with files 'fileA' and 'fileB'; and the class `cs4` which has a `register` project and a `project1` project with files 'readme', 'file1.cpp', 'file1.h', 'file2.cpp', and 'file2.h'.
 
-Notice how the projects named `register` don't have files associated with them. `register` is a special project that will register the user with the try program. do will automatically submit the required `/dev/null` file with the `register` project.
+This dofile descripes the class `vcss243`, which has:
+
+* a `lab01` project with files `file1`, `file2`, and `file3`
+* a `register` project
+
+This dotfile also describes the class `cs4`, which has:
+
+* a `register` project
+* a `project1` project with files `REAMDE`, `file1.cpp`, `file1.h`, `file2.cpp`, and `file2.h`
+
+Notice that the projects named `register` don't have files associated with them. `register` is a special project that will register the user with the try program. do will automatically submit the required `/dev/null` file with the `register` project. If a `register` project has any files associated with it, do will ignore them.
+
+Notice that there is no `#enddo` in the example. `#enddo` is only needed to let do ignore a section of the file.
 
 ## Resources
 
