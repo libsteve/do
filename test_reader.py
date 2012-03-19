@@ -39,6 +39,21 @@ def test_proper(s, expected, name=""):
 #####
 
 #####
+## test find file
+
+test_proper(find_file(""), lambda s: s == "dofile", name="find file no file given")
+
+test_proper(find_file("dofile"), lambda s: s == "dofile", name="find file dofile")
+
+test_proper(find_file("bad_file"), lambda s: s == None, name="find file bad file")
+
+test_proper(find_file("reader.py"), lambda s: s == "reader.py", name="good file")
+
+
+
+
+
+#####
 ## test dofile decleration
 
 test("", lambda s: s.do_declaired == False, name="no dofile")

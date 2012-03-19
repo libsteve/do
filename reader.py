@@ -38,6 +38,22 @@ def _mk_session():
 	return x
 
 
+def find_file(filename):
+	if filename == "":
+		default_files = ['dofile', 'dofile.txt', 'Dofile', 'DOFILE', 'Makefile', 'MAKEFILE', 'makefile', 'mkfile']
+	else:
+		default_files = [filename]
+	for file_name in default_files:
+		fi = None
+		try:
+			fi = open(file_name, 'r')
+			fi.close()
+			return file_name
+		except IOError:
+			continue
+	return None
+
+
 def parse_file(filename):
 	fi = open(filename, 'r')
 	sess = _mk_session()
