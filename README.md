@@ -27,6 +27,14 @@ The dofile syntax can be placed within a 'dofile' or directly within a Makefile.
 Declare all lines following as dofile syntax:
 
 	'#' 'dofile'
+	
+Declaring the username:
+
+	'#' 'username' ['='] <username>
+	
+Declaring the machine:
+
+	'#' 'machine' ['='] <machine>
 
 Declaring the class:
 
@@ -47,6 +55,8 @@ Declare the end of the dofile segment:
 dofile example:
 
 	#dofile
+	#username = altece
+	#machine = glados.cs.rit.edu
 
 	#class = vcss243
 	
@@ -81,6 +91,8 @@ This dotfile also describes the class `cs4`, which has:
 Notice that the projects named `register` don't have files associated with them. `register` is a special project that will register the user with the try program. do will automatically submit the required `/dev/null` file with the `register` project. If a `register` project has any files associated with it, do will ignore them.
 
 Notice that there is no `#enddo` in the example. `#enddo` is only needed to let do ignore a section of the file.
+
+If the username and machine are not specified in the dofile, do will prompt the user for that information.
 
 ## Resources
 

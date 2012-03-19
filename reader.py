@@ -13,6 +13,10 @@ class session:
 	pass
 
 
+class data:
+	pass
+
+
 def _mk_section(name):
 	x = section()
 	x.name = name
@@ -29,13 +33,54 @@ def _mk_project(name, section):
 	return x
 
 
+def _mk_data():
+	x = data()
+	x.username = ""
+	x.machine = ""
+	return x
+
+
 def _mk_session():
 	x = session()
 	x.current_section = None
 	x.current_project = None
 	x.sections = []
 	x.do_declaired = False
+	x.data = _mk_data()
 	return x
+
+######
+## here are commands
+
+def _make_section(sess, name):
+	sess.current_section = _mk_section(name)
+	sess.sections += [sess.current_section]
+
+
+def _set_username(sess, name):
+	sess.data.username = name
+
+
+def _set_machine(sess, name):
+	sess.data.machine = name
+
+
+_one_arg_commands = {
+	'class':lambda sess, x: _make_section(sess, x), 
+	'username':lambda sess, x: _set_username(sess, x),
+	'machine':lambda sess, x: _set_machine(sess, x)
+}
+
+def _set_do_declaired(sess, val):
+	sess.do_declaired = val
+
+_no_arg_commands = {
+	'enddo':lambda sess: _set_do_declaired(sess, False),
+	'dofile':lambda sess: _set_do_declaired(sess, True)
+}
+
+## commands end
+######
 
 
 def find_file(filename):
@@ -60,7 +105,7 @@ def parse_file(filename):
 	for line in fi:
 		parse_line(sess, line)
 	fi.close()
-	return sess.sections
+	return sess.sections, sess.data
 
 
 def parse_line(sess, line):
@@ -80,36 +125,41 @@ def parse_line(sess, line):
 			_parse_for_file(sess, line)
 
 
+def remove_symbols(line, symbols):
+	if len(symbols) == 0:
+		return [line]
+	sym = symbols[0]
+	if sym == ' ':
+		tokens = string.split(line)
+	else:
+		tokens = string.split(line, sym)
+	new_tokens = []
+	for i in range(len(tokens)):
+		if tokens[i] != '':
+			new_tokens += [tokens[i]]
+	tokens = []
+	for token in new_tokens:
+		tokens += remove_symbols(token, symbols[1:])
+	return tokens
+
+
 def _parse_for_section(sess, line):
-	# get rid of the first '#' and strip whitespace again
-	good_line = string.strip(line)
-	good_line = string.strip(good_line, '#')
-	good_line = string.strip(good_line)
-	tokens = string.split(good_line, '=')
-	if len(tokens) == 1:
-		tokens = string.split(good_line)
-	if len(tokens) == 3 and tokens[2] == '':
-		tokens = tokens[:2]
+	tokens = remove_symbols(line, [' ','#','='])
+	cmd = string.lower(tokens[0])
 	if sess.do_declaired == True:
 		if len(tokens) == 2:
-			if string.lower(tokens[0]) == 'class':
-				sess.current_section = _mk_section(tokens[1])
-				sess.sections += [sess.current_section]
+			_one_arg_commands[cmd](sess, tokens[1])
 		elif len(tokens) == 1:
-			if string.lower(tokens[0]) == 'enddo':
-				sess.do_declaired = False
+			_no_arg_commands[cmd](sess)
 	else:
 		if len(tokens) == 1:
-			if string.lower(tokens[0]) == 'dofile':
-				sess.do_declaired = True
-
+			_no_arg_commands[cmd](sess)
 		
 
 def _parse_for_project(sess, line):
 	if sess.do_declaired == False or sess.current_section == None:
 		return
-	good_line = string.strip(line)
-	tokens = string.split(good_line, ':')
+	tokens = remove_symbols(line, [' ',':'])
 	if len(tokens) == 2 and tokens[1] == '':
 		tokens = tokens[:1]
 	if len(tokens) == 1:

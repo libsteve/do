@@ -6,6 +6,9 @@ def get_session():
 	x.current_project = None
 	x.sections = []
 	x.do_declaired = False
+	x.data = data()
+	x.data.username = ""
+	x.data.machine = ""
 	return x
 
 _success = 0
@@ -48,6 +51,19 @@ test_proper(find_file("dofile"), lambda s: s == "dofile", name="find file dofile
 test_proper(find_file("bad_file"), lambda s: s == None, name="find file bad file")
 
 test_proper(find_file("reader.py"), lambda s: s == "reader.py", name="good file")
+
+
+
+
+
+#####
+## test remove_symbols
+
+test_proper(remove_symbols("#c=2", ['#','=']), lambda s: s == ['c','2'], name="remove symbols # and =")
+
+test_proper(remove_symbols("   #    c   =    2   ", ['#','=',' ']), lambda s: s == ['c','2'], name="remove symbols #, =, and whitespace")
+
+test_proper(remove_symbols("#c=2", []), lambda s: s == ["#c=2"], name="remove symbols none")
 
 
 
@@ -123,6 +139,19 @@ parse_line(sess, "#class=vcss243")
 parse_line(sess, "lab01:")
 
 test_s(sess, "file1 file2", lambda s: len(s.current_project.files) == 2 and s.current_project.files[0] == "file1" and s.current_project.files[1] == "file2", name="file on lab")
+
+
+
+
+
+#####
+## test username and password
+sess = get_session()
+parse_line(sess, "#dofile")
+
+test_s(sess, "#username=altece", lambda s: s.data.username == "altece", name="data username test")
+
+test_s(sess, "#machine=glados.cs.rit.edu", lambda s: s.data.machine == "glados.cs.rit.edu", name="data machine test")
 
 
 
