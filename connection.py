@@ -4,14 +4,21 @@ from paramiko import SFTPClient
 _CONNECTION = None
 
 def connect(server, port=22, username=None, password=None):
-	if _CONNECTION == None:
+	global _CONNECTION
+	if _CONNECTION != None:
+		close_connection()
+	try:
 		client = SSHClient()
 		client.load_system_host_keys()
 		client.connect(server, port, username, password)
 		_CONNECTION = client
+	except:
+		_CONNECTION = None
+		print("Connection Failure")
 	return _CONNECTION
 
 def close_connection():
+	global _CONNECTION
 	if _CONNECTION != None:
 		_CONNECTION.close()
 		_CONNECTION = None
@@ -34,9 +41,7 @@ def copy_to_server(connection, files):
 	client.close()
 
 def rmdir_from_server(connection, folder=_TEMP_FOLDER):
-	client = connection.open_sftp()
-	_remote_rmdir(client, folder)
-	client.close()
+	connection.exec_command("rm -Rf " + folder)
 
 def _is_str_in_lst(str, lst):
 	for item in lst:
@@ -44,17 +49,19 @@ def _is_str_in_lst(str, lst):
 			return True
 	return False
 
-def _remote_rmdir(sftp_client, folder):
-	files = sftp_client.listdir(folder)
-	for f in files:
-		try:
-			sftp_client.remove(f)
-		except IOError:
-			_remote_rmdir(stfp_client, f)
-	sftp.rmdir(folder)
 
 
-
+def exec_on_server(connection, command="", args=[], show_output=True):
+	if command != "":
+		cmd = command
+		for arg in args:
+			cmd += " " + arg
+		(stdin, stdout, sterr) = connection.exec_command(cmd)
+		if show_output:
+			out = stdout.readline()
+			for line in stdout:
+				out += line
+			print(out)
 
 
 
